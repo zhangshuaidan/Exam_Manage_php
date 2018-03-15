@@ -32,8 +32,9 @@ function exportExcel($title=array(), $data=array(), $fileName='', $savePath='./'
             $i++;  
         }  
         $_row++;  
+     
     }  
-  
+
     //填写数据  
     if($data){  
         $i = 0;  
@@ -46,6 +47,17 @@ function exportExcel($title=array(), $data=array(), $fileName='', $savePath='./'
             $i++;  
         }  
     }  
+    //表格宽度处理
+    
+      $obj->getActiveSheet(0)->getColumnDimension("a")->setWidth(20);
+      $obj->getActiveSheet(0)->getColumnDimension("b")->setWidth(20);
+      $obj->getActiveSheet(0)->getColumnDimension("c")->setWidth(20);
+      $obj->getActiveSheet(0)->getColumnDimension("d")->setWidth(20);
+	
+	//设置居中      
+      $obj->getDefaultStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+      $obj->getDefaultStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
       
     //文件名处理  
     if(!$fileName){  

@@ -16,18 +16,32 @@ $major=$data->major;
 $grade=$data->grade;
 $class_name=$data->class_name;
 
-//print_r ($id);
-//print_r ($department);
-//print_r ($major);
-//print_r ($grade);
-//print_r ($class_name);
-
 $pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
-$sql = "update classes set department='{$department}',
-	major='{$major}',grade='{$grade}',class_name='{$class_name}' where id='{$id}' ";
-$result = $pdo->exec($sql);
 
-print_r ($result);
+$repeat = $pdo->query("select count(major) as total from classes where department='{$department}' and major='{$major}' and grade='{$grade}' and class_name='{$class_name}' ");
+$rowre = $repeat->fetchALL(PDO::FETCH_ASSOC);
+//print_r($rowre[0]);
+if($rowre[0]['total']>0){
+	$obj= new stdClass();
+	$obj->txt="更改班级信息失败";
+	$obj->tip="班级:".$grade."级".$major.$class_name."班,已经存在";
+	$obj->count=$rowre[0]['total'];
+	returnStatus(100,"err",$obj);
+}else{
+	$sql = "update classes set department='{$department}',
+	major='{$major}',grade='{$grade}',class_name='{$class_name}' where id='{$id}' ";
+	$result = $pdo->exec($sql);
+	$obj= new stdClass();
+	$obj->txt="更改班级信息成功";
+	$obj->tip="已成功为你更改".$grade."级".$major.$class_name."班";
+	$obj->count=$result;
+	returnStatus(200,"success",$obj);
+	
+}
+
+
+//
+//print_r ($result);
 
 }
 

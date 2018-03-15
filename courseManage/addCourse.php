@@ -5,13 +5,26 @@ if(($_SERVER['REQUEST_METHOD']) =='OPTIONS'){
 }
 if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 	$res =json_decode($GLOBALS['HTTP_RAW_POST_DATA']);
-	
-
 	$course=$res->coursename;
-//	print_r ($course);
+
 	$pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
-	$result=$pdo->exec("insert into course (coursename) values ('{$course}')");
-	print_r ($result);
+//	$result=$pdo->exec("insert into course (coursename) values ('{$course}')");
+	$result=$pdo->exec("insert into course (coursename) select '{$course}' from dual where not exists (select * from course where coursename='{$course}') ");
+
+if($result>0){
+	$obj= new stdClass();
+	$obj->txt="新增课程成功";
+	$obj->tip="已成功为你添加课程:".$course;
+	$obj->count=$result;
+	returnStatus(200,"success",$obj);
+}else{
+	$obj= new stdClass();
+	$obj->txt="新增课程失败";
+	$obj->tip="课程:".$course."已经存在";
+	$obj->count=$result;
+	returnStatus(100,"err",$obj);
+}
+
 //	$data =json_decode($res->data);
 //	$department=$data->department;
 //	$major=$data->major;
