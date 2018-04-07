@@ -10,11 +10,11 @@ if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 		$username=$arr->uname;
 		$password =$arr->pwd;
 		$pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
+		
 		$result=$pdo->query("select * from user where uname='{$username}'");
 		$row = $result->fetchAll(PDO::FETCH_ASSOC);
 		if(count($row)>0){
 		if($password===$row[0]['pwd']){
-			
 			
 			$res=new Response("success",100);
 			echo json_encode($res);

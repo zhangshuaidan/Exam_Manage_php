@@ -5,24 +5,15 @@ if(($_SERVER['REQUEST_METHOD']) =='OPTIONS'){
 }
 if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 	$res =json_decode($GLOBALS['HTTP_RAW_POST_DATA']);
-	
 	$obj=json_decode($res->obj);
-
 	$course=$obj->course;
 	$major=$obj->major;
 	$grade=$obj->grade;
-	
-	
-	
 	$pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
-//	$result=$pdo->exec("insert into elective (course,major,grade) 
-//	values ('{$course}','{$major}','{$grade}')");
-	
 
 	
 $result=$pdo->exec("insert into elective (course,major,grade) select '{$course}','{$major}','{$grade}'
 from dual where not exists (select * from elective where course='{$course}' and major='{$major}' and grade='{$grade}')");
-//	print_r ($result);
 if($result>0){
 	$obj= new stdClass();
 	$obj->txt="新增选修成功";

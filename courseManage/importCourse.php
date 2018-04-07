@@ -4,6 +4,14 @@ $file = $_FILES['myfile'];
 if (is_uploaded_file($_FILES['myfile']['tmp_name'])) {
 	$myfile= $_FILES['myfile']['tmp_name'];
 	$myarr = importExecl($myfile);
+	
+	
+	
+
+	
+	
+	
+	
 	$newarr=array();
 for ($i = 2; $i < sizeof($myarr)-2; $i++) {  
 	array_push($newarr,$myarr[$i]["B"]);
@@ -29,7 +37,7 @@ foreach($newarr as $v){
    	$elecftobj= new stdClass();
 	$elecftobj->txt="已成功为你导入".$c."个课程";
 	$elecftobj->tip="提示";
-	returnStatus(200,"success",$elecftobj);
+	returnStatus(100,"success",$elecftobj);
 }
 
 ?>

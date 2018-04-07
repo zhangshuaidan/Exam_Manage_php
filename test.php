@@ -1,8 +1,8 @@
 <?php
-	header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-//header('Access-Control-Allow-Methods: GET, POST, PUT,DELETE');
-   header('Access-Control-Allow-Methods: PUT,POST,GET');
+//	header('Access-Control-Allow-Origin: *');
+//header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+////header('Access-Control-Allow-Methods: GET, POST, PUT,DELETE');
+// header('Access-Control-Allow-Methods: PUT,POST,GET');
 //  header('Access-Control-Allow-Credentials: true');
 //  header('Access-Control-Allow-Headers: Content-Type, Accept');
 //include_once "lib/fun.php";
@@ -20,17 +20,17 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 //print_r($_POST); 
 //
 
-if(($_SERVER['REQUEST_METHOD']) =='OPTIONS'){
-	return false;
-}
-
-if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
-		 $student = $GLOBALS['HTTP_RAW_POST_DATA'];
-		echo $student;
-//		echo "yes";
-	}else{
-		echo "123";
-	}
+//if(($_SERVER['REQUEST_METHOD']) =='OPTIONS'){
+//	return false;
+//}
+//
+//if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
+//		 $student = $GLOBALS['HTTP_RAW_POST_DATA'];
+//		echo $student;
+////		echo "yes";
+//	}else{
+//		echo "123";
+//	}
 //  echo $student['name'];
 //  echo $student['age'];
 //  echo $student['sex'];
@@ -43,5 +43,5 @@ if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 //
 // print_r $_POST
 //echo "132"
-
+echo strpbrk("I love Shanghai!",["a","love"]);
 ?>

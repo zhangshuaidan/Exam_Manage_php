@@ -27,7 +27,7 @@ from dual where not exists (select * from classes where department='{$department
 if($result>0){
 	$obj= new stdClass();
 	$obj->txt="新增班级成功";
-	$obj->tip="已成功为你插入".$grade."级".$major.$class_name."班";
+	$obj->tip="已成功新增".$grade."级".$major.$class_name."班";
 	$obj->count=$result;
 	returnStatus(200,"success",$obj);
 }else{
