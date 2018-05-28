@@ -9,11 +9,12 @@ if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 //	$data =json_decode($res->data);	
 	$id=$res->id;
 	$room=$res->room;
+	$hold=$res->hold;
 	$pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
 
 //  print_r ($result);
     
-    $repeat = $pdo->query("select count(room) as total from room where room='{$room}' ");
+    $repeat = $pdo->query("select count(room) as total from room where room='{$room}' and hold='{$hold}' ");
 	$rowre = $repeat->fetchALL(PDO::FETCH_ASSOC);
 	
 	if($rowre[0]['total']>0){
@@ -23,7 +24,7 @@ if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 	$obj->count=$rowre[0]['total'];
 	returnStatus(100,"err",$obj);
 	}else{
-	$sql = "update room set room='{$room}' where id='{$id}' ";
+	$sql = "update room set room='{$room}',hold='{$hold}'  where id='{$id}' ";
 	$result = $pdo->exec($sql);
 	$obj= new stdClass();
 	$obj->txt="更改教室信息成功";

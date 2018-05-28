@@ -11,7 +11,7 @@ if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 	$major=$data->major;
 	$grade=$data->grade;
 	$class_name=$data->class_name;
-	
+	$count=$data->count;
 //	print_r ($department);
 //	print_r ($major);
 //	print_r ($grade);
@@ -22,8 +22,9 @@ if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 //	values ('{$department}','{$major}','{$grade}','{$class_name}')");
 	
 
-$result=$pdo->exec("insert into classes (department,major,grade,class_name) select '{$department}','{$major}','{$grade}','{$class_name}'
-from dual where not exists (select * from classes where department='{$department}' and major='{$major}' and grade='{$grade}' and class_name='{$class_name}') ");
+$result=$pdo->exec("insert into classes (department,major,grade,class_name,count) select '{$department}','{$major}','{$grade}','{$class_name}','{$count}'
+from dual where not exists (select * from classes where department='{$department}' and major='{$major}' and grade='{$grade}' 
+and class_name='{$class_name}') ");
 if($result>0){
 	$obj= new stdClass();
 	$obj->txt="新增班级成功";

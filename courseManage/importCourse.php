@@ -12,32 +12,55 @@ if (is_uploaded_file($_FILES['myfile']['tmp_name'])) {
 	
 	
 	
-	$newarr=array();
+$newarr=array();
 for ($i = 2; $i < sizeof($myarr)-2; $i++) {  
-	array_push($newarr,$myarr[$i]["B"]);
+//	array_push($newarr,$myarr[$i]["B"]);
+	array_push($newarr,array('coursecode'=>$myarr[$i]["A"],"coursename"=>$myarr[$i]["B"],"teacher"=>$myarr[$i]["C"]));
 }  
+//print_r($newarr);
 //print_r(array_unique($newarr));
-
-$newarr=array_unique($newarr);
+//$newarr=array_unique($newarr);
 
 	$pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
 	
 //	$result=$pdo->exec("truncate table course");
 //	echo $result;
+
+
 $c=0;
 foreach($newarr as $v){
-	
-	$repeat = $pdo->query("select count(coursename) as total from course where coursename='{$v}' ");
+//	print_r($v["coursename"]);
+
+	$repeat = $pdo->query("select count(coursename) as total from course where coursename='{$v['coursename']}' ");
 	$rowre = $repeat->fetchALL(PDO::FETCH_ASSOC);
 	if($rowre[0]['total']<=0){
-		$result=$pdo->exec("insert into course (coursename) values ('{$v}') ");
+		$result=$pdo->exec("insert into course (coursecode,coursename,teacher) values ('{$v['coursecode']}','{$v['coursename']}','{$v['teacher']}') ");
 		$c++;
 	}
+
 }
    	$elecftobj= new stdClass();
 	$elecftobj->txt="已成功为你导入".$c."个课程";
 	$elecftobj->tip="提示";
 	returnStatus(100,"success",$elecftobj);
+
+//
+//$c=0;
+//foreach($newarr as $v){
+//	
+//	$repeat = $pdo->query("select count(coursename) as total from course where coursename='{$v}' ");
+//	$rowre = $repeat->fetchALL(PDO::FETCH_ASSOC);
+//	if($rowre[0]['total']<=0){
+//		$result=$pdo->exec("insert into course (coursename) values ('{$v}') ");
+//		$c++;
+//	}
+//}
+// 	$elecftobj= new stdClass();
+//	$elecftobj->txt="已成功为你导入".$c."个课程";
+//	$elecftobj->tip="提示";
+//	returnStatus(100,"success",$elecftobj);
+	
+	
 }
 
 ?>

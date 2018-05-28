@@ -16,7 +16,7 @@
 	}
 //	print_r($newarr);
 		
-   exportExcel(array('科目',"日期","时间","专业","年级","监考教室","监考人员"),$newarr, '档案', './', true);  
+   exportExcel(array('科目',"日期","时间","专业","年级","班级","考场","监考人员"),$newarr, '考试记录', './', true);  
  
 
 ?>

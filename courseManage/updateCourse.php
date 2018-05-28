@@ -9,6 +9,8 @@ if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 //	$data =json_decode($res->data);	
 	$id=$res->id;
 	$coursename=$res->coursename;
+	$coursecode=$res->coursecode;
+	$teacher=$res->teacher;
 	
 	$pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
 	$repeat = $pdo->query("select count(coursename) as total from course where coursename='{$coursename}' ");
@@ -21,7 +23,7 @@ if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 	returnStatus(100,"err",$obj);
 	}else{
 		
-	$sql = "update course set coursename='{$coursename}' where id='{$id}' ";
+	$sql = "update course set coursename='{$coursename}',coursecode='{$coursecode}',teacher='{$teacher}'  where id='{$id}' ";
 	$result = $pdo->exec($sql);
 	$obj= new stdClass();
 	$obj->txt="更改班级课程信息成功";

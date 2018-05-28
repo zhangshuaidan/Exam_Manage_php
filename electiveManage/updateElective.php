@@ -12,10 +12,11 @@ if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 	$course=$obj->course;
 	$major=$obj->major;
 	$grade=$obj->grade;
+	$class_name=$obj->class_name;
 	
 	$pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
 
-	$repeat = $pdo->query("select count(course) as total from elective where course='{$course}' and major='{$major}' and grade='{$grade}' ");
+	$repeat = $pdo->query("select count(course) as total from elective where course='{$course}' and major='{$major}' and grade='{$grade}' and class_name='{$class_name}' ");
 	$rowre = $repeat->fetchALL(PDO::FETCH_ASSOC);
 	
 	if($rowre[0]['total']>0){
@@ -26,7 +27,7 @@ if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 	returnStatus(100,"err",$obj);
 }else{
 	$sql = "update elective set course='{$course}',
-			major='{$major}',grade='{$grade}' where id='{$id}' ";
+			major='{$major}',grade='{$grade}',class_name='{$class_name}' where id='{$id}' ";
 	$result = $pdo->exec($sql);
 	
 	$obj= new stdClass();

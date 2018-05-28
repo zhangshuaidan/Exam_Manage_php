@@ -7,11 +7,12 @@ if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 	$res =json_decode($GLOBALS['HTTP_RAW_POST_DATA']);
 	
 	$room=$res->room;
+	$hold=$res->hold;
 	$pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
 //	$result=$pdo->exec("insert into room (room) values ('{$room}')");
 //	print_r($result);
 
-	$result=$pdo->exec("insert into room (room) select '{$room}' 
+	$result=$pdo->exec("insert into room (room,hold) select '{$room}','{$hold}'
 	from dual where not exists (select * from room where room='{$room}') ");
 	
 if($result>0){

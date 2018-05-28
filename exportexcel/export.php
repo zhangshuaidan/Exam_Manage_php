@@ -53,6 +53,8 @@ function exportExcel($title=array(), $data=array(), $fileName='', $savePath='./'
       $obj->getActiveSheet(0)->getColumnDimension("b")->setWidth(20);
       $obj->getActiveSheet(0)->getColumnDimension("c")->setWidth(20);
       $obj->getActiveSheet(0)->getColumnDimension("d")->setWidth(20);
+      $obj->getActiveSheet(0)->getColumnDimension("g")->setWidth(30);
+      $obj->getActiveSheet(0)->getColumnDimension("h")->setWidth(30);
 	
 	//设置居中      
       $obj->getDefaultStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);

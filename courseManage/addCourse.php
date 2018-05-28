@@ -6,10 +6,13 @@ if(($_SERVER['REQUEST_METHOD']) =='OPTIONS'){
 if(!empty(json_decode($GLOBALS['HTTP_RAW_POST_DATA']))){
 	$res =json_decode($GLOBALS['HTTP_RAW_POST_DATA']);
 	$course=$res->coursename;
-
+	$coursecode=$res->coursecode;
+	$teacher=$res->teacher;
+	
 	$pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
 //	$result=$pdo->exec("insert into course (coursename) values ('{$course}')");
-	$result=$pdo->exec("insert into course (coursename) select '{$course}' from dual where not exists (select * from course where coursename='{$course}') ");
+	$result=$pdo->exec("insert into course (coursecode,coursename,teacher) select 
+	 '{$coursecode}','{$course}','{$teacher}' from dual where not exists (select * from course where  coursename='{$course}'  ) ");
 
 if($result>0){
 	$obj= new stdClass();

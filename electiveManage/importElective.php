@@ -17,18 +17,19 @@ if (is_uploaded_file($_FILES['myfile']['tmp_name'])) {
       $c=explode(",",$newarr[$i][1]);
 
 		    for($j=0;$j<sizeof($c);$j++){
-		    	$class="";
+		    	$major="";
 		    	$grade="";
+		    	$class_name="";
 		    	if(strpos($c[$j],"数媒")!==false){
-		    		$class="数字媒体";
+		    		$major="数字媒体技术";
 		    	}else if(strpos($c[$j],"网络")!==false){
-		    		$class="网络工程";
+		    		$major="网络工程";
 		    	}else if(strpos($c[$j],"计科")!==false){
-		    		$class="计算机科学与技术";
+		    		$major="计算机科学与技术";
 		    	}else  if(strpos($c[$j],"物联网")!==false){
-		    		$class ="物联网工程";
+		    		$major ="物联网工程";
 		    	}else {
-		    		$class ="";
+		    		$major ="";
 		    	}
 		    	
 		    	
@@ -43,36 +44,80 @@ if (is_uploaded_file($_FILES['myfile']['tmp_name'])) {
 		    	}else {
 		    		$grade="";
 		    	}
-		    			    	
 		    	
-		    	$newc =array("class"=>$class,"grade"=>$grade);
+		    	
+		    	if(strpos($c[$j],"本1")!==false){
+		    			$class_name="1";
+		    	}else if(strpos($c[$j],"本2")!==false){
+		    			$class_name="2";
+		    	}else if(strpos($c[$j],"本3")!==false){
+		    		$class_name="2";
+		    	}else  {
+		    		$class_name="";
+		    	} 	
+		    	
+		    	$newc =array("major"=>$major,"grade"=>$grade,"class_name"=>$class_name);
 		    	$c[$j]=$newc;
 		    	
 		    }
 		       $newarr[$i][1]=$c;
 }  
 
+//print_r($newarr);
 	$pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
 $totalcount=0;
 for($k=0;$k<sizeof($newarr);$k++){
-	$mycourse=$newarr[$k][0];
-	$myclass=$newarr[$k][1][0]["class"];
-	$mygrade=$newarr[$k][1][0]['grade'];
-	if($myclass){
-$result=$pdo->exec("insert into elective (course,major,grade) select '{$mycourse}','{$myclass}','{$mygrade}'
-from dual where not exists (select * from elective where course='{$mycourse}' and major='{$myclass}' and grade='{$mygrade}')");
-//	print_r($result);
+		$mycourse=$newarr[$k][0];
+		foreach($newarr[$k][1] as $v){
+//			print_r($v);
+		$mymajor=$v['major'];
+		$mygrade=$v['grade'];
+		$myclass=$v['class_name'];
+		
+		if($mymajor){
+			
+		$result=$pdo->exec("insert into elective (course,major,grade,class_name) select
+		 '{$mycourse}','{$mymajor}','{$mygrade}','{$myclass}'
+from dual where not exists 
+(select * from elective where course='{$mycourse}' and major='{$mymajor}' and grade='{$mygrade}' and class_name='{$myclass}')");
 	if($result>0){
 		$totalcount++;
 	}
-//	echo "\n";
-	
-	}
-}	
-  	$elecftobj= new stdClass();
+		}
+		}
+}
+
+//print_r($totalcount);
+	$elecftobj= new stdClass();
 	$elecftobj->txt="已成功为你导入".$totalcount."条选修记录";
 	$elecftobj->tip="提示";
 	returnStatus(100,"success",$elecftobj);
+
+
+
+//
+//	$pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
+//$totalcount=0;
+//for($k=0;$k<sizeof($newarr);$k++){
+//	$mycourse=$newarr[$k][0];
+//	$myclass=$newarr[$k][1][0]["major"];
+//	$mygrade=$newarr[$k][1][0]['grade'];
+//	if($myclass){
+//$result=$pdo->exec("insert into elective (course,major,grade) select '{$mycourse}','{$myclass}','{$mygrade}'
+//from dual where not exists (select * from elective where course='{$mycourse}' and major='{$myclass}' and grade='{$mygrade}')");
+////	print_r($result);
+//	if($result>0){
+//		$totalcount++;
+//	}
+////	echo "\n";
+//	
+//	}
+//}	
+
+//	$elecftobj= new stdClass();
+//	$elecftobj->txt="已成功为你导入".$totalcount."条选修记录";
+//	$elecftobj->tip="提示";
+//	returnStatus(100,"success",$elecftobj);
 //echo ("共导入".$totalcount);
 	
 

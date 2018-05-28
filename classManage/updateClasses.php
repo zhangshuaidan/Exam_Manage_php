@@ -15,10 +15,10 @@ $department=$data->department;
 $major=$data->major;
 $grade=$data->grade;
 $class_name=$data->class_name;
-
+$count=$data->count;
 $pdo=mysqlInit("mysql", "localhost", "myexam", "root", "");
 
-$repeat = $pdo->query("select count(major) as total from classes where department='{$department}' and major='{$major}' and grade='{$grade}' and class_name='{$class_name}' ");
+$repeat = $pdo->query("select count(major) as total from classes where department='{$department}' and major='{$major}' and grade='{$grade}' and class_name='{$class_name}' and count='{$count}' ");
 $rowre = $repeat->fetchALL(PDO::FETCH_ASSOC);
 //print_r($rowre[0]);
 if($rowre[0]['total']>0){
@@ -29,7 +29,7 @@ if($rowre[0]['total']>0){
 	returnStatus(100,"err",$obj);
 }else{
 	$sql = "update classes set department='{$department}',
-	major='{$major}',grade='{$grade}',class_name='{$class_name}' where id='{$id}' ";
+	major='{$major}',grade='{$grade}',class_name='{$class_name}',count='{$count}' where id='{$id}' ";
 	$result = $pdo->exec($sql);
 	$obj= new stdClass();
 	$obj->txt="更改班级信息成功";
